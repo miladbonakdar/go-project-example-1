@@ -1,0 +1,768 @@
+basePath: /
+definitions:
+  dto.ApproveGiftCardsDTO:
+    properties:
+      gift_cards_secret:
+        items:
+          type: string
+        type: array
+      uun:
+        type: string
+    type: object
+  dto.BulkCreateGiftCardsDTO:
+    properties:
+      gift_cards:
+        items:
+          $ref: '#/definitions/dto.CreateGiftCardDTO'
+        type: array
+    type: object
+  dto.BulkCreateSameGiftCardsDTO:
+    properties:
+      amount:
+        type: integer
+      campaign_id:
+        type: integer
+      count:
+        type: integer
+      expire_date:
+        type: string
+    type: object
+  dto.CampaignDTO:
+    properties:
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      id:
+        example: "0"
+        type: string
+      title:
+        type: string
+    type: object
+  dto.CampaignPageDTO:
+    properties:
+      campaigns:
+        items:
+          $ref: '#/definitions/dto.CampaignDTO'
+        type: array
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      page:
+        type: integer
+      size:
+        type: integer
+      total_items:
+        type: integer
+    type: object
+  dto.CreateCampaignDTO:
+    properties:
+      title:
+        type: string
+    type: object
+  dto.CreateGiftCardDTO:
+    properties:
+      amount:
+        type: integer
+      campaign_id:
+        type: integer
+      expire_date:
+        type: string
+    type: object
+  dto.DeleteMessageDTO:
+    properties:
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      id:
+        example: "0"
+        type: string
+      message:
+        type: string
+    type: object
+  dto.GiftCardDTO:
+    properties:
+      amount:
+        type: integer
+      campaign_id:
+        type: integer
+      campaign_title:
+        type: string
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      expire_date:
+        type: string
+      id:
+        example: "0"
+        type: string
+      is_valid:
+        type: boolean
+      public_code:
+        type: string
+      secret_code:
+        type: string
+      uun:
+        type: string
+    type: object
+  dto.GiftCardStatusDTO:
+    properties:
+      amount:
+        type: integer
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      expire_date:
+        type: string
+      id:
+        type: integer
+      is_valid:
+        type: boolean
+      public_key:
+        type: string
+      secret_key:
+        type: string
+      uun:
+        type: string
+    type: object
+  dto.GiftCardStatusListDTO:
+    properties:
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      gift_cards_statuses:
+        items:
+          $ref: '#/definitions/dto.GiftCardStatusDTO'
+        type: array
+    type: object
+  dto.GiftCardsListDTO:
+    properties:
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      gift_cards:
+        items:
+          $ref: '#/definitions/dto.GiftCardDTO'
+        type: array
+    type: object
+  dto.GiftCardsPageDTO:
+    properties:
+      error:
+        $ref: '#/definitions/indraframework.IndraException'
+        type: object
+      gift_cards:
+        items:
+          $ref: '#/definitions/dto.GiftCardDTO'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      total_items:
+        type: integer
+    type: object
+  dto.UpdateCampaignDto:
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  dto.UpdateGiftCardDto:
+    properties:
+      amount:
+        type: integer
+      expire_date:
+        type: string
+      id:
+        type: integer
+    type: object
+  dto.ValidateGiftCardsDto:
+    properties:
+      gift_cards_secret:
+        items:
+          type: string
+        type: array
+    type: object
+  indraframework.IndraException:
+    properties:
+      errorCode:
+        type: integer
+      message:
+        type: string
+      severity:
+        type: integer
+      technicalMessage:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: info@jabama.com
+    name: info@jabama.com
+    url: jabama.com
+  description: This Api is used for creating and managing giftcards
+  license:
+    name: NONE
+    url: None
+  termsOfService: NONE
+  title: Gift Card API
+  version: "1.0"
+paths:
+  /v1/campaign:
+    post:
+      consumes:
+      - application/json
+      description: store a new campaign and generates the keys
+      operationId: store
+      parameters:
+      - description: Create campaign dto
+        in: body
+        name: campaignDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateCampaignDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CampaignDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: store a campaign
+      tags:
+      - Campaign
+    put:
+      consumes:
+      - application/json
+      description: updates a campaign
+      operationId: update
+      parameters:
+      - description: Update Campaign dto
+        in: body
+        name: campaignDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateCampaignDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CampaignDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: updates a campaign
+      tags:
+      - Campaign
+  /v1/campaign/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: deletes a campaign by id
+      operationId: delete
+      parameters:
+      - description: campaign's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.DeleteMessageDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: deletes a campaign
+      tags:
+      - Campaign
+  /v1/campaign/page/{size}/{number}:
+    get:
+      consumes:
+      - application/json
+      description: get list of campaigns in paging object
+      operationId: find-page
+      parameters:
+      - description: page size
+        in: path
+        name: size
+        required: true
+        type: number
+      - description: page number
+        in: path
+        name: number
+        required: true
+        type: number
+      - description: search by title
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CampaignPageDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: Campaign paging
+      tags:
+      - Campaign
+  /v1/gift-card:
+    post:
+      consumes:
+      - application/json
+      description: store a new gift card and generates the keys
+      operationId: store
+      parameters:
+      - description: Create Gift Card dto
+        in: body
+        name: giftCardDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateGiftCardDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: store a gift card
+      tags:
+      - Gift Card
+    put:
+      consumes:
+      - application/json
+      description: updates a gift card. just the expire date and the amount can be updated
+      operationId: update
+      parameters:
+      - description: Update Gift Card dto
+        in: body
+        name: giftCardDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateGiftCardDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: updates a gift card
+      tags:
+      - Gift Card
+  /v1/gift-card/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: deletes a gift card by id
+      operationId: delete
+      parameters:
+      - description: Gift Card's id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.DeleteMessageDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: deletes a gift card
+      tags:
+      - Gift Card
+  /v1/gift-card/approve-gift-card/{uun}/{secret}:
+    put:
+      consumes:
+      - application/json
+      description: approve for single gift card
+      operationId: approve-gift-card
+      parameters:
+      - description: uun
+        in: path
+        name: uun
+        required: true
+        type: string
+      - description: gift card secret
+        in: path
+        name: secret
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardStatusDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: approve gift card
+      tags:
+      - Gift Card
+  /v1/gift-card/approve-gift-cards:
+    post:
+      consumes:
+      - application/json
+      description: bulk approve for gift cards
+      operationId: approve-gift-cards
+      parameters:
+      - description: bulk approve dto
+        in: body
+        name: approveGiftCardsDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ApproveGiftCardsDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardStatusListDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: bulk approve gift cards
+      tags:
+      - Gift Card
+  /v1/gift-card/create-many:
+    post:
+      consumes:
+      - application/json
+      description: bulk insert for different gift cards
+      operationId: create-many
+      parameters:
+      - description: bulk insert gift cards list
+        in: body
+        name: createGiftCards
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BulkCreateGiftCardsDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardsListDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: bulk insert gift cards
+      tags:
+      - Gift Card
+  /v1/gift-card/create-same-many:
+    post:
+      consumes:
+      - application/json
+      description: bulk insert for the same gift cards
+      operationId: create-same-many
+      parameters:
+      - description: bulk insert for the same gift cards dto
+        in: body
+        name: createGiftCards
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BulkCreateSameGiftCardsDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardsListDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: bulk insert gift cards
+      tags:
+      - Gift Card
+  /v1/gift-card/find-by-public-key/{key}:
+    get:
+      consumes:
+      - application/json
+      description: find a gift card from the db
+      operationId: find-by-public-key
+      parameters:
+      - description: Gift Card public key
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardStatusDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: Get gift card details by public key
+      tags:
+      - Gift Card
+  /v1/gift-card/find/{id}:
+    get:
+      consumes:
+      - application/json
+      description: find a gift card from the db
+      operationId: get-gift-card-by-id
+      parameters:
+      - description: Gift Card ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: Get an gift card by id
+      tags:
+      - Gift Card
+  /v1/gift-card/health:
+    get:
+      consumes:
+      - application/json
+      description: get 200 response
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: test Endpoint
+      tags:
+      - Public
+  /v1/gift-card/info:
+    get:
+      consumes:
+      - application/json
+      description: get 200 response
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: Info
+      tags:
+      - Public
+  /v1/gift-card/page/{size}/{number}:
+    get:
+      consumes:
+      - application/json
+      description: get list of gift cards in paging object
+      operationId: find-page
+      parameters:
+      - description: page size
+        in: path
+        name: size
+        required: true
+        type: integer
+      - description: page number
+        in: path
+        name: number
+        required: true
+        type: integer
+      - description: campaign id
+        in: query
+        name: campaignId
+        type: integer
+      - description: search in public key
+        in: query
+        name: search
+        type: string
+      - description: is valid gift card
+        in: query
+        name: isValid
+        type: boolean
+      - description: expire date from
+        in: query
+        name: expireDateFrom
+        type: string
+      - description: expire date to
+        in: query
+        name: expireDateTo
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardsPageDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: gift cards paging
+      tags:
+      - Gift Card
+  /v1/gift-card/user-gift-cards/{uun}:
+    get:
+      consumes:
+      - application/json
+      description: get list of user's gift cards
+      operationId: find-by-uun
+      parameters:
+      - description: uun
+        in: path
+        name: uun
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardsListDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: user gift cards
+      tags:
+      - Gift Card
+  /v1/gift-card/validate-gift-card/{secret}:
+    get:
+      consumes:
+      - application/json
+      description: validate gift card
+      operationId: validate-gift-card
+      parameters:
+      - description: gift card secret
+        in: path
+        name: secret
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardStatusDTO'
+      summary: validate gift card
+      tags:
+      - Gift Card
+  /v1/gift-card/validate-gift-cards:
+    post:
+      consumes:
+      - application/json
+      description: bulk validate for gift cards
+      operationId: validate-gift-cards
+      parameters:
+      - description: bulk validate dto
+        in: body
+        name: validateGiftCardsDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ValidateGiftCardsDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GiftCardStatusListDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/indraframework.IndraException'
+      summary: bulk validate gift cards
+      tags:
+      - Gift Card
+swagger: "2.0"
+x-extension-openapi:
+  example: value on a json format
